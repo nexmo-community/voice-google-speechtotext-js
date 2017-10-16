@@ -1,0 +1,15 @@
+[{
+    "action" : "talk"
+},
+    {
+       "action": "connect",
+       "endpoint": [
+           {
+              "type": "websocket",
+              "content-type": "audio/l16;rate=16000", 
+              "headers": {
+              }
+           }
+       ]
+     }
+]

@@ -1,0 +1,11 @@
+[{
+    "action" : "talk",
+    "text" : "Please enter your language code followed by the hash key",
+    "bargeIn": true
+},
+{
+    "action": "input",
+    "timeOut": 20,
+    "submitOnHash": true,
+    "eventUrl": []
+}]

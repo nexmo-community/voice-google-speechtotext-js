@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<head>
+<meta charset="utf-8">
+<title>Google Cloud Speech Transcription</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+    #container{width:100%;}
+    #left{float:left;width:50%;}
+    #right{float:right;width:50%;}
+</style>
+    
+</head>
+<body>
+
+<header>
+<h1>Call 020 3893 1940</h1>
+</header>
+
+
+<div id="container">
+  <div id="left">
+      <table id="langauges">
+          <tr>
+              <td>Code</td>
+              <td>Language</td>
+          </tr>
+      </table>
+  </div>
+  <div id="right">
+      <div id='text'></div>
+  </div>
+</div>
+
+
+
+
+<script>
+var ws
+var hostname = window.location.host
+if (window.location.protocol == "https:"){
+    var proto = "wss://"
+}
+else{
+    var proto = 'ws://'
+}
+    
+function connect() {
+    ws = new WebSocket(proto + hostname + "/browser");
+    ws.onopen = function() {
+        console.log("CONNECTED");
+    };  
+    ws.onmessage = function(event) {
+        eventRecieved(event.data);
+    };
+}
+
+
+function eventRecieved(data){
+    console.log(data);
+    textdiv = document.createElement("div");
+    textdiv.textContent = data;
+    document.getElementById('text').appendChild(textdiv);
+}
+
+
+function loadData(path){
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function()
+    {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                    processData(xhr.responseText)
+            } else {
+                    console.error(xhr);
+            }
+        }
+    };
+    xhr.open("GET", '/langs.json', true);
+    xhr.send();
+}
+
+function processData(payload) {
+    data = JSON.parse(payload);
+    data.reverse();
+    var tab = document.getElementById("langauges"); 
+    for (var i=0; i<data.length; i++) {
+        var row = tab.insertRow(1);
+        var cell1 = row.insertCell(0);
+        var cell2 = row.insertCell(1);
+        cell1.innerHTML = data[i].languageID;
+        cell2.innerHTML = data[i].Language;
+    }
+}
+
+loadData();
+connect();
+
+</script>
+
+
+</body>
+</html>
