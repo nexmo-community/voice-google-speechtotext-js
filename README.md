@@ -1,4 +1,4 @@
-#Google Cloud Speech Transcription Demo
+# Google Cloud Speech Transcription Demo
 
 This is a demo applicaiton of using Google Cloud Speech API with Nexmo Websockets to perform realtime transcription in multiple languages.
 
