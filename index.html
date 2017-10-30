@@ -3,37 +3,86 @@
 <meta charset="utf-8">
 <title>Google Cloud Speech Transcription</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<style>
-    #container{width:100%;}
-    #left{float:left;width:50%;}
-    #right{float:right;width:50%;}
-</style>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.0/css/bulma.min.css">
     
 </head>
 <body>
 
-<header>
-<h1>Call 020 7946 1234</h1>
-</header>
+  <header class="hero is-info is-bold">
+    <div class="hero-body">
+      <div class="container">
+        <h1 class="title">
+          Call 020 7946 1234
+        </h1>
+        <h2 class="subtitle">
+          Demo application of Google Cloud Speech recognition
+        </h2>
+      </div>
+    </div>
+  </header>
 
+  <section class="section">
+    <div class="columns">
+      <div class="column is-one-quarter">
+        <nav class="panel" id="options-panel">
+          <p class="panel-heading">
+            <i class="fa fa-cogs" aria-hidden="true"></i> language options
+          </p>
 
-<div id="container">
-  <div id="left">
-      <table id="langauges">
-          <tr>
-              <td>Code</td>
-              <td>Language</td>
-          </tr>
-      </table>
-  </div>
-  <div id="right">
-      <div id='text'></div>
-  </div>
-</div>
+          <div class="panel-block">
+            <p class="control has-icons-left">
+              <input class="input is-small" type="text" placeholder="search" id="language-filter">
+              <span class="icon is-small is-left">
+                <i class="fa fa-search"></i>
+              </span>
+            </p>
+          </div>
 
+          <script id="option-template" type="text/x-handlebars-template">
+            {{#each langOptions}}
+              <a class="panel-block">
+                <span class="panel-icon">
+                  <i class="fa fa-language"></i>
+                </span>
+                <p>
+                  <strong>{{ languageID }} &ndash;</strong> {{ languageName }} <small>({{ languageCode }})</small>
+                </p>
+              </a>
+            {{/each}}
+          </script>
 
+        </nav>
+      </div>
 
+      <div class="column" id="transcripts">
+        <script id="transcript-template" type="text/x-handlebars-template">
+          <div class="box">
+            <article>
+              <div class="content">
+                <p>
+                  <strong>{{ user }}</strong> <small>{{ languageCode }}</small>
+                  <br>
+                  {{ text }}
+                </p>
 
+                <hr />
+
+                <div class="control">
+                  <textarea class="textarea is-small" type="text" disabled>
+                    {{ this }}
+                  </textarea>
+                </div>
+              </div>
+            </article>
+          </div>
+        </script>
+      </div>
+    </div>
+  </section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.slim.min.js"></script>
 <script>
 var ws
 var hostname = window.location.host
@@ -56,10 +105,10 @@ function connect() {
 
 
 function eventRecieved(data){
-    console.log(data);
-    textdiv = document.createElement("div");
-    textdiv.textContent = data;
-    document.getElementById('text').appendChild(textdiv);
+    var source = $("#transcript-template").html();
+    var template = Handlebars.compile(source);
+    var html = template(data);
+    $("#transcripts").append(html);
 }
 
 
@@ -80,16 +129,25 @@ function loadData(path){
 }
 
 function processData(payload) {
-    data = JSON.parse(payload);
-    data.reverse();
-    var tab = document.getElementById("langauges"); 
-    for (var i=0; i<data.length; i++) {
-        var row = tab.insertRow(1);
-        var cell1 = row.insertCell(0);
-        var cell2 = row.insertCell(1);
-        cell1.innerHTML = data[i].languageID;
-        cell2.innerHTML = data[i].Language;
-    }
+    var data = JSON.parse(payload);
+    var source = $("#option-template").html();
+    var template = Handlebars.compile(source);
+    var html = template({"langOptions": data});
+    $("#options-panel").append(html);
+
+    $('#language-filter').keyup(function() {
+      $(".panel-block p").not('.control').each(function(index, element){
+        if($('#language-filter').val() != "") {
+          if(~$(element).text().toLowerCase().indexOf($('#language-filter').val())) {
+            $(element).parent().show();
+          } else {
+            $(element).parent().hide();
+          }
+        } else {
+          $(".panel-block").show();
+        }
+      });
+    });
 }
 
 loadData();
