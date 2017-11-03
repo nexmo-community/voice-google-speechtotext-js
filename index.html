@@ -61,18 +61,10 @@
             <article>
               <div class="content">
                 <p>
-                  <strong>{{ user }}</strong> <small>{{ languageCode }}</small>
+                 <i>{{ userid }}</i> {{ flag }}
                   <br>
-                  {{ text }}
+                   <strong><font size=+1.5>{{ text }}</font></strong>
                 </p>
-
-                <hr />
-
-                <div class="control">
-                  <textarea class="textarea is-small" type="text" disabled>
-                    {{ this }}
-                  </textarea>
-                </div>
               </div>
             </article>
           </div>
@@ -104,7 +96,11 @@ function connect() {
 }
 
 
-function eventRecieved(data){
+function eventRecieved(payload){
+    var data = JSON.parse(payload);
+    data.userid = "User"+data.user.slice(9,13);
+    data.flag = data.languageCode.split("-")[1].toUpperCase().replace(/./g, char => String.fromCodePoint(char.charCodeAt(0)+127397) );
+    console.log(data);
     var source = $("#transcript-template").html();
     var template = Handlebars.compile(source);
     var html = template(data);
