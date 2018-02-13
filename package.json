@@ -17,10 +17,11 @@
   },
   "homepage": "https://github.com/nexmo-community/voice-google-speechtotext#readme",
   "dependencies": {
-      "dotenv": "^4.0.0.",
-      "websocket": "^1.0.23",
-      "httpdispatcher": "^2.0.1",
-      "url": "^0.11.0",
-      "@google-cloud/speech": "^0.10.2",
-    },
+    "@google-cloud/speech": "^1.1.0",
+    "dotenv": "^4.0.0",
+    "httpdispatcher": "^2.0.1",
+    "nexmo": "^2.2.0",
+    "url": "^0.11.0",
+    "websocket": "^1.0.23"
+  }
 }

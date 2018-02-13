@@ -10,13 +10,26 @@ var url = require("url");
 const fs = require('fs');
 
 const Speech = require('@google-cloud/speech');
-const speech = Speech(); // Instantiates a client
+
+const speech = new Speech.SpeechClient();
+
 
 var clients = []
 
 //Create a server
 var server = http.createServer(handleRequest);
 var wsserver = http.createServer(handleRequest);
+
+process.env.APP_ID
+
+const Nexmo = require('nexmo');
+const nexmo = new Nexmo({
+  apiKey: "dummy",
+  apiSecret: "dummy",
+  applicationId: process.env.APP_ID,
+  privateKey: "./private.key"
+});
+
 
 var nexmows = new WebSocketServer({
     httpServer: wsserver,
@@ -55,6 +68,9 @@ function convert(message){
     return data
 }
 
+dispatcher.setStatic('/files');
+dispatcher.setStaticDirname('files');
+  
 // Serve the  page
 dispatcher.onGet("/", function(req, res) {
     fs.readFile('./index.html', function(error, data) {
@@ -95,14 +111,41 @@ dispatcher.onPost("/input", function(req, res) {
     var lang = langs.filter(function(l){
         return l.languageID == params.dtmf;
     });
-    
-    ncco[0].text = lang[0].languageName
-    ncco[1].endpoint[0].uri = "ws://"+ process.env.WSHOSTNAME
-    ncco[1].endpoint[0].headers.languageCode = lang[0].languageCode
-    ncco[1].endpoint[0].headers.user = getparams.user
+    ncco[0].eventUrl[0] = "https://"+process.env.HOSTNAME+"/recording?from=" + getparams.user +"&langCode=" + lang[0].languageCode
+    ncco[1].text = lang[0].languageName
+    ncco[2].endpoint[0].uri = "ws://"+ process.env.WSHOSTNAME
+    ncco[2].endpoint[0].headers.languageCode = lang[0].languageCode
+    ncco[2].endpoint[0].headers.user = getparams.user
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify(ncco), 'utf-8');
 });
+
+
+// Recieve Recording
+dispatcher.onPost("/recording", function(req, res) {
+    var parsedUrl = url.parse(req.url, true); // true to get query as object
+    var getparams = parsedUrl.query;
+    var params = JSON.parse(req.body);
+    console.log(req.body)
+    var localfile = "files/"+params['conversation_uuid']+".wav"
+    nexmo.files.save(params['recording_url'], localfile, (err, response) => {
+      if(response) {
+          console.log('The audio is downloaded successfully!');
+          var response = {text: "https://"+process.env.HOSTNAME + "/" + localfile,
+                          languageCode: getparams.langCode,
+                          user: getparams.from
+                          }
+          for (var i = 0; i < clients.length; i++) {
+              clients[i].send(JSON.stringify(response))
+              console.log(response)
+          }
+      }
+    });
+    res.writeHead(204);
+    res.end();
+});
+
+
 
 // Log events
 dispatcher.onPost("/event", function(req, res) {
@@ -170,7 +213,6 @@ class RecognizeStream {
 
     
     close(){
-        console.log((new Date()) + ' Peer ' + this.connection.remoteAddress + ' disconnected.');
         this.stream.destroy();
     }
     

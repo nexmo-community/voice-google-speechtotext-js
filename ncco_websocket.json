@@ -1,6 +1,11 @@
-[{
+[   {
+    "action" : "record",
+    "format" : "wav",
+    "eventUrl": []
+    },
+    {
     "action" : "talk"
-},
+    },
     {
        "action": "connect",
        "endpoint": [

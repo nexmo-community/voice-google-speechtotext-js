@@ -1,1 +1,5 @@
 google_creds.json
+files/*
+private.key
+.env
+node_modules*
