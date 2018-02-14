@@ -113,7 +113,7 @@ dispatcher.onPost("/input", function(req, res) {
     });
     ncco[0].eventUrl[0] = "http://"+process.env.HOSTNAME+"/recording?from=" + getparams.user +"&langCode=" + lang[0].languageCode
     ncco[1].text = lang[0].languageName
-    ncco[2].endpoint[0].uri = "ws://"+ process.env.WSHOSTNAME
+    ncco[2].endpoint[0].uri = "ws://"+ process.env.WSHOSTNAME + "/nexmosocket"
     ncco[2].endpoint[0].headers.languageCode = lang[0].languageCode
     ncco[2].endpoint[0].headers.user = getparams.user
     res.writeHead(200, { 'Content-Type': 'application/json' });
