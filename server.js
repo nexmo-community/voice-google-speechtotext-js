@@ -95,7 +95,7 @@ dispatcher.onGet("/ncco", function(req, res) {
     var params = parsedUrl.query;
     var ncco = require('./ncco_input.json');
     
-    ncco[1].eventUrl[0] = "https://"+process.env.HOSTNAME+"/input?user=" + params.from
+    ncco[1].eventUrl[0] = "http://"+process.env.HOSTNAME+"/input?user=" + params.from
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify(ncco), 'utf-8');
 });
@@ -111,7 +111,7 @@ dispatcher.onPost("/input", function(req, res) {
     var lang = langs.filter(function(l){
         return l.languageID == params.dtmf;
     });
-    ncco[0].eventUrl[0] = "https://"+process.env.HOSTNAME+"/recording?from=" + getparams.user +"&langCode=" + lang[0].languageCode
+    ncco[0].eventUrl[0] = "http://"+process.env.HOSTNAME+"/recording?from=" + getparams.user +"&langCode=" + lang[0].languageCode
     ncco[1].text = lang[0].languageName
     ncco[2].endpoint[0].uri = "ws://"+ process.env.WSHOSTNAME
     ncco[2].endpoint[0].headers.languageCode = lang[0].languageCode
@@ -131,7 +131,7 @@ dispatcher.onPost("/recording", function(req, res) {
     nexmo.files.save(params['recording_url'], localfile, (err, response) => {
       if(response) {
           console.log('The audio is downloaded successfully!');
-          var response = {text: "https://"+process.env.HOSTNAME + "/" + localfile,
+          var response = {text: "http://"+process.env.HOSTNAME + "/" + localfile,
                           languageCode: getparams.langCode,
                           user: getparams.from
                           }
