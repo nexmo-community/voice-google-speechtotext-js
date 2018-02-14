@@ -137,7 +137,6 @@ dispatcher.onPost("/recording", function(req, res) {
                           }
           for (var i = 0; i < clients.length; i++) {
               clients[i].send(JSON.stringify(response))
-              console.log(response)
           }
       }
     });
