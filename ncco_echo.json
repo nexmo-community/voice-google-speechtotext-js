@@ -8,7 +8,7 @@
     "endpoint":[
       {
         "type":"websocket",
-        "uri":"ws://sammachin.ngrok.io/socket",
+        "uri":"ws://example.ngrok.io/socket",
         "content-type":"audio/l16;rate=16000",
         "headers":{
           "whatever":"metadata_you_want"
