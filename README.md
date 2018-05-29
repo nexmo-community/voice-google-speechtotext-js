@@ -9,6 +9,7 @@ The application is built in node you will need the following packages:
 * httpdispatcher
 * url
 * @google-cloud/speech
+* nexmo
 
 These are all specified in the `package.json`
 
