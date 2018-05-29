@@ -16,8 +16,7 @@ These are all specified in the `package.json`
 ## Google Cloud Speech API
 You'll need to signup for the Speech API as part of Google Cloud, start here https://console.cloud.google.com/launcher/details/google/speech.googleapis.com
 
-Once you have enabled the API you'll need to create a project and get a set of credentials, these will be downloaded as a JSON file, same that file as `google_creds.json` in this project, (see the example file)
-
+Once you have enabled the API you'll need to create a project and get a set of credentials, these will be downloaded as a JSON file, save that file as `google_creds.json` in this project.
 
 ## Nexmo
 You will need to create a Nexmo Voice Applicaiton with the answer url set to `[YOURHOSTNAME]/ncco` and optionally the event URL set to `[YOURHOSTNAME]/event`
