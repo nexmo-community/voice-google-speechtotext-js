@@ -121,7 +121,7 @@ dispatcher.onPost("/input", function(req, res) {
 });
 
 
-// Recieve Recording
+// Receive Recording
 dispatcher.onPost("/recording", function(req, res) {
     var parsedUrl = url.parse(req.url, true); // true to get query as object
     var getparams = parsedUrl.query;
