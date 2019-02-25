@@ -25,11 +25,11 @@ Almost everything is on port `8000` apart from the nexmo websocket connection wh
 ## Running
 1. To start the server run `node ./server.js`
 
-1. You can then browse to the root of your hostname and the page should be served
+1. Open `http://localhost:8000/` in the browser to view language selection options and results of the transcription.
 
 1. Nexmo API would need access to your server so you can either deploy it to the cloud of your choice or use https://ngrok.com/ and run `ngrok http 8001` locally.
 
-1. Call the number linked to your applicaiton, enter the language code you want to test (e.g. 16 for UK English) and once the language has been confirmed to you start talking.
+1. Call the number linked to your application, enter the language code you want to test (e.g. 16 for UK English) and once the language has been confirmed to you, start talking.
 
 1. You will see transcription on the right hand side of the page.
 
