@@ -27,7 +27,7 @@ Almost everything is on port `8000` apart from the nexmo websocket connection wh
 
 1. You can then browse to the root of your hostname and the page should be served
 
-1. Nexmo API would need access to your server so you can either deploy it to the cloud of your choice or use https://ngrok.com/ and run `ngrok http 8000` locally.
+1. Nexmo API would need access to your server so you can either deploy it to the cloud of your choice or use https://ngrok.com/ and run `ngrok http 8001` locally.
 
 1. Call the number linked to your applicaiton, enter the language code you want to test (e.g. 16 for UK English) and once the language has been confirmed to you start talking.
 

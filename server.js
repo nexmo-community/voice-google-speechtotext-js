@@ -6,7 +6,6 @@ var http = require('http')
 var HttpDispatcher = require('httpdispatcher')
 var dispatcher = new HttpDispatcher()
 var url = require('url')
-var request = require('request')
 
 const fs = require('fs')
 
@@ -151,7 +150,7 @@ pagews.on('connect', function (connection) {
   console.log((new Date()) + ' Connection accepted' + ' - Protocol Version ' + connection.webSocketVersion)
   clients.push(connection)
   connection.on('message', function (message) {
-    request.config.languageCode = message.utf8Data
+    this.request.config.languageCode = message.utf8Data
   })
   connection.on('close', function (reasonCode, description) {
     console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.')
