@@ -19,8 +19,6 @@ var clients = []
 var server = http.createServer(handleRequest)
 var wsserver = http.createServer(handleRequest)
 
-process.env.APP_ID
-
 const Nexmo = require('nexmo')
 const nexmo = new Nexmo({
   apiKey: 'dummy',

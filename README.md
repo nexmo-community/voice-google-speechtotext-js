@@ -5,12 +5,12 @@ This is a demo applicaiton of using Google Cloud Speech API with Nexmo Websocket
 ## Prerequisites
 
 ### Google Cloud Speech API
-1. Signup for the Speech API as part of Google Cloud: https://console.cloud.google.com/launcher/details/google/speech.googleapis.com
+1. Signup for the [Speech API as part of Google Cloud](https://console.cloud.google.com/launcher/details/google/speech.googleapis.com).
 1. Once you have enabled the API, create a project and get a set of credentials downloaded as a JSON file. Save that file as `google_creds.json` in the root of the project.
 
 ### Nexmo
 1. Create a Nexmo Voice Applicaiton with the answer url set to `[YOURHOSTNAME]/ncco` and optionally the event URL set to `[YOURHOSTNAME]/event`
-1. Purchase a number and link it to the applicaiton, you can edit the number that is displayed on the webpage in `index.html` to match.
+1. Purchase a number and link it to the application, you can edit the number that is displayed on the webpage in `index.html` to match.
 
 
 ## Configuration
