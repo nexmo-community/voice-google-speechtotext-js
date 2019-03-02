@@ -2,5 +2,19 @@
   "name": "Nexmo + Google Cloud Speech",
   "description": "Demo applicaiton of using Google Cloud Speech API with Nexmo Websockets to perform realtime transcription in multiple languages.",
   "repository": "https://github.com/nexmo-community/voice-google-speechtotext",
-  "keywords": ["node", "nexmo", "google cloud", "gcp", "text to speech"]
+  "keywords": ["node", "nexmo", "google cloud", "gcp", "text to speech"],
+  "env": {
+    "APP_ID": {
+      "description": "Nexmo Application ID"
+    },
+    "GOOGLE_APPLICATION_CREDENTIALS": {
+      "description": "Google Credentials JSON file"
+    },
+    "HOSTNAME": {
+      "description": "Hostname where you are running the webserver listening on port 8000"
+    },
+    "WSHOSTNAME": {
+      "description": "Hostname where you are running the webserver listening on port 8001"
+    }
+  }
 }

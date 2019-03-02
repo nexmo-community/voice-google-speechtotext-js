@@ -1,4 +1,5 @@
 # Nexmo + Google Cloud Speech Transcription Demo
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://nexmo.dev/google-nexmo-speechtotext-heroku)
 
 This is a demo applicaiton of using Google Cloud Speech API with Nexmo Websockets to perform realtime transcription in multiple languages.
 
