@@ -24,7 +24,7 @@ const nexmo = new Nexmo({
   apiKey: 'dummy',
   apiSecret: 'dummy',
   applicationId: process.env.APP_ID,
-  privateKey: './private.key'
+  privateKey: process.env.PRIVATE_KEY
 })
 
 var nexmows = new WebSocketServer({
