@@ -7,6 +7,9 @@
     "APP_ID": {
       "description": "Nexmo Application ID"
     },
+    "PRIVATE_KEY": {
+      "description": "Nexmo Application Private Key. Has to start with -----BEGIN PRIVATE KEY-----"
+    },
     "GOOGLE_APPLICATION_CREDENTIALS": {
       "description": "Google Credentials JSON file"
     },
