@@ -9,13 +9,13 @@ const app = express();
 app.server = http.createServer(app);
 const expressWS = require('express-ws')(app, app.server);
 
+app.use(express.static('files'))
+
 const PORT = process.env.PORT || 8000;
 
 app.use(bodyParser.json());
 
 var WebSocketServer = require('websocket').server;
-var HttpDispatcher = require('httpdispatcher');
-var dispatcher = new HttpDispatcher();
 var url = require("url");
 
 const fs = require('fs');
@@ -27,9 +27,6 @@ const speech = new Speech.SpeechClient();
 
 // var clients = []
 
-//Create a server
-// var server = http.createServer(handleRequest);
-// var wsserver = http.createServer(handleRequest);
 
 const Nexmo = require('nexmo');
 const nexmo = new Nexmo({
@@ -45,16 +42,6 @@ const nexmo = new Nexmo({
 
 // });
 
-// use our dispatcher
-function handleRequest(request, response){
-    try {
-        //Dispatch
-        dispatcher.dispatch(request, response);
-    } catch(err) {
-        console.log(err);
-    }
-}
-
 // Downsample frames from 16Khz to 8Khz
 function convert(message){
     var arr = []
@@ -69,9 +56,6 @@ function convert(message){
     var data = Buffer.concat(arr);
     return data
 }
-
-dispatcher.setStatic('/files');
-dispatcher.setStaticDirname('files');
   
 // Serve the  page
 app.get("/", function(req, res) {
