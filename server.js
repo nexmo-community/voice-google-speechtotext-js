@@ -6,10 +6,12 @@ var http = require('http');
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
+app.server = http.createServer(app);
+const expressWS = require('express-ws')(app, app.server);
+
 const PORT = process.env.PORT || 8000;
 
 app.use(bodyParser.json());
-app.server = http.createServer(app);
 
 var WebSocketServer = require('websocket').server;
 var HttpDispatcher = require('httpdispatcher');
@@ -23,11 +25,11 @@ const Speech = require('@google-cloud/speech');
 const speech = new Speech.SpeechClient();
 
 
-var clients = []
+// var clients = []
 
 //Create a server
 // var server = http.createServer(handleRequest);
-var wsserver = http.createServer(handleRequest);
+// var wsserver = http.createServer(handleRequest);
 
 const Nexmo = require('nexmo');
 const nexmo = new Nexmo({
@@ -37,18 +39,11 @@ const nexmo = new Nexmo({
   privateKey: "./private.key"
 });
 
+// var pagews = new WebSocketServer({
+//     httpServer: app.server,
+//     autoAcceptConnections: true,
 
-var nexmows = new WebSocketServer({
-    httpServer: wsserver,
-    autoAcceptConnections: true,
-
-});
-
-var pagews = new WebSocketServer({
-    httpServer: app.server,
-    autoAcceptConnections: true,
-
-});
+// });
 
 // use our dispatcher
 function handleRequest(request, response){
@@ -144,9 +139,9 @@ app.post("/recording", function(req, res) {
                 user: getparams.from
             }
 
-          for (var i = 0; i < clients.length; i++) {
-              clients[i].send(JSON.stringify(response))
-          }
+        //   for (var i = 0; i < clients.length; i++) {
+        //       clients[i].send(JSON.stringify(response))
+        //   }
       }
     });
     res.writeHead(204);
@@ -162,28 +157,30 @@ app.post("/event", function(req, res) {
 });
 
 // Page Websocket Handler
-pagews.on('connect', function(connection) {
-    console.log((new Date()) + ' Connection accepted' + ' - Protocol Version ' + connection.webSocketVersion);
-    clients.push(connection);
-    connection.on('message', function(message) {
-        request.config.languageCode = message.utf8Data;
-    });
-    connection.on('close', function(reasonCode, description) {
-        console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.');
-        //remove the page from the list of clients
-        var index = clients.indexOf(connection);
-        if (index > -1) {
-            clients.splice(index, 1);
-        }
-    });
-});
+// pagews.on('connect', function(connection) {
+//     console.log((new Date()) + ' Connection accepted' + ' - Protocol Version ' + connection.webSocketVersion);
+//     clients.push(connection);
+//     connection.on('message', function(message) {
+//         request.config.languageCode = message.utf8Data;
+//     });
+//     connection.on('close', function(reasonCode, description) {
+//         console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.');
+//         //remove the page from the list of clients
+//         var index = clients.indexOf(connection);
+//         if (index > -1) {
+//             clients.splice(index, 1);
+//         }
+//     });
+// });
 
 
 // Nexmo Websocket Handler
-nexmows.on('connect', function(connection) {
-    console.log((new Date()) + ' Connection accepted' + ' - Protocol Version ' + connection.webSocketVersion);
+app.ws('/nexmosocket', function(ws, req) {
+    console.log('incoming to /nexmosocket');
+    console.log((new Date()) + ' Connection accepted' + ' - Protocol Version ' + ws.webSocketVersion);
     // Create the stream at the start of the call
-    var recognizeStream = new RecognizeStream(connection);
+    console.log(ws);
+    var recognizeStream = new RecognizeStream(ws);
 });
 
 class RecognizeStream {
@@ -204,15 +201,15 @@ class RecognizeStream {
     }
     
     processMessage(message){
-        if (message.type === 'utf8') {
+        if (typeof message === 'string') {
             // Log the initial Message
-            var data = JSON.parse(message.utf8Data)
+            var data = JSON.parse(message)
             this.request.config.languageCode = data.languageCode
             this.user = data.user            
         }
-        else if (message.type === 'binary') {
+        else if (typeof message === 'object') {
             // Convert to 8k then send to recogniser
-            var data8000 = convert(message.binaryData);
+            var data8000 = convert(message);
             this.getStream().write(data8000);
         }
         
@@ -261,16 +258,11 @@ class RecognizeStream {
             user: this.user
         }
 
-        for (var i = 0; i < clients.length; i++) {
-            clients[i].send(JSON.stringify(response))
-        }
+        // for (var i = 0; i < clients.length; i++) {
+        //     clients[i].send(JSON.stringify(response))
+        // }
     }
 }
       
 //Start the server
 app.server.listen(PORT, () => console.log(`Example app listening on port ${PORT}!`))
-
-wsserver.listen(8001, function(){
-    //Callback triggered when server is successfully running
-    console.log("Server listening on: http://localhost:%s", 8001);
-});
