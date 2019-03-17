@@ -1,8 +1,17 @@
 "use strict"; 
 require('dotenv').load();
 
-var WebSocketServer = require('websocket').server;
 var http = require('http');
+
+const express = require('express');
+const bodyParser = require('body-parser');
+const app = express();
+const PORT = process.env.PORT || 8000;
+
+app.use(bodyParser.json());
+app.server = http.createServer(app);
+
+var WebSocketServer = require('websocket').server;
 var HttpDispatcher = require('httpdispatcher');
 var dispatcher = new HttpDispatcher();
 var url = require("url");
@@ -17,10 +26,8 @@ const speech = new Speech.SpeechClient();
 var clients = []
 
 //Create a server
-var server = http.createServer(handleRequest);
+// var server = http.createServer(handleRequest);
 var wsserver = http.createServer(handleRequest);
-
-process.env.APP_ID
 
 const Nexmo = require('nexmo');
 const nexmo = new Nexmo({
@@ -38,7 +45,7 @@ var nexmows = new WebSocketServer({
 });
 
 var pagews = new WebSocketServer({
-    httpServer: server,
+    httpServer: app.server,
     autoAcceptConnections: true,
 
 });
@@ -72,7 +79,7 @@ dispatcher.setStatic('/files');
 dispatcher.setStaticDirname('files');
   
 // Serve the  page
-dispatcher.onGet("/", function(req, res) {
+app.get("/", function(req, res) {
     fs.readFile('./index.html', function(error, data) {
        res.writeHead(200, { 'Content-Type': 'text/html' });
        res.end(data, 'utf-8');
@@ -80,7 +87,7 @@ dispatcher.onGet("/", function(req, res) {
 });
 
 // Serve the langs 
-dispatcher.onGet("/langs.json", function(req, res) {
+app.get("/langs.json", function(req, res) {
     fs.readFile('./langs.json', function(error, data) {
        res.writeHead(200, { 'Content-Type': 'application/json' });
        res.end(data, 'utf-16');
@@ -90,7 +97,7 @@ dispatcher.onGet("/langs.json", function(req, res) {
 
 
 // Serve the 1st ncco
-dispatcher.onGet("/ncco", function(req, res) {
+app.get("/ncco", function(req, res) {
     var parsedUrl = url.parse(req.url, true); // true to get query as object
     var params = parsedUrl.query;
     var ncco = require('./ncco_input.json');
@@ -102,8 +109,8 @@ dispatcher.onGet("/ncco", function(req, res) {
 
 
 // Serve the 2nd ncco  based on input 
-dispatcher.onPost("/input", function(req, res) {
-    var params = JSON.parse(req.body);
+app.post("/input", function(req, res) {
+    var params = req.body;
     var parsedUrl = url.parse(req.url, true); // true to get query as object
     var getparams = parsedUrl.query;
     var ncco = require('./ncco_websocket.json');
@@ -112,8 +119,8 @@ dispatcher.onPost("/input", function(req, res) {
         return l.languageID == params.dtmf;
     });
     ncco[0].eventUrl[0] = "http://"+process.env.HOSTNAME+"/recording?from=" + getparams.user +"&langCode=" + lang[0].languageCode
-    ncco[1].text = lang[0].languageName
-    ncco[2].endpoint[0].uri = "ws://"+ process.env.HOSTNAME + "/nexmosocket"
+    ncco[1].text = lang[0].languageName + ". Please share your message now.";
+    ncco[2].endpoint[0].uri = "ws://"+ process.env.WSHOSTNAME + "/nexmosocket"
     ncco[2].endpoint[0].headers.languageCode = lang[0].languageCode
     ncco[2].endpoint[0].headers.user = getparams.user
     res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -122,19 +129,21 @@ dispatcher.onPost("/input", function(req, res) {
 
 
 // Receive Recording
-dispatcher.onPost("/recording", function(req, res) {
+app.post("/recording", function(req, res) {
     var parsedUrl = url.parse(req.url, true); // true to get query as object
     var getparams = parsedUrl.query;
-    var params = JSON.parse(req.body);
+    var params = req.body;
     console.log(req.body)
     var localfile = "files/"+params['conversation_uuid']+".wav"
     nexmo.files.save(params['recording_url'], localfile, (err, response) => {
       if(response) {
           console.log('The audio is downloaded successfully!');
-          var response = {text: "http://"+process.env.HOSTNAME + "/" + localfile,
-                          languageCode: getparams.langCode,
-                          user: getparams.from
-                          }
+          var response = {
+                text: "http://"+process.env.HOSTNAME + "/" + localfile,
+                languageCode: getparams.langCode,
+                user: getparams.from
+            }
+
           for (var i = 0; i < clients.length; i++) {
               clients[i].send(JSON.stringify(response))
           }
@@ -145,9 +154,8 @@ dispatcher.onPost("/recording", function(req, res) {
 });
 
 
-
 // Log events
-dispatcher.onPost("/event", function(req, res) {
+app.post("/event", function(req, res) {
        console.log(req.body)
        res.writeHead(204);
        res.end();
@@ -244,10 +252,15 @@ class RecognizeStream {
     }
     
     sendTranscription(data){
-        var response = {text: data.results[0].alternatives[0].transcript,
-                        languageCode: this.request.config.languageCode,
-                        user: this.user
-                        }
+        console.log('received transcription')
+        console.log(JSON.stringify(data, null, 2));
+
+        var response = {
+            text: data.results[0].alternatives[0].transcript,
+            languageCode: this.request.config.languageCode,
+            user: this.user
+        }
+
         for (var i = 0; i < clients.length; i++) {
             clients[i].send(JSON.stringify(response))
         }
@@ -255,10 +268,8 @@ class RecognizeStream {
 }
       
 //Start the server
-server.listen(8000, function(){
-    //Callback triggered when server is successfully running
-    console.log("Server listening on: http://localhost:%s", 8000);
-});
+app.server.listen(PORT, () => console.log(`Example app listening on port ${PORT}!`))
+
 wsserver.listen(8001, function(){
     //Callback triggered when server is successfully running
     console.log("Server listening on: http://localhost:%s", 8001);
