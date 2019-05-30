@@ -4,20 +4,51 @@
   "repository": "https://github.com/nexmo-community/voice-google-speechtotext",
   "keywords": ["node", "nexmo", "google cloud", "gcp", "text to speech"],
   "env": {
-    "APP_ID": {
-      "description": "Nexmo Application ID"
+    "NAME": {
+      "description": "The Heroku app name."
     },
-    "PRIVATE_KEY": {
-      "description": "Nexmo Application Private Key. Has to start with -----BEGIN PRIVATE KEY-----"
+    "CREATE_NEXMO_APP": {
+      "description": "Should the application automatically create a Nexmo application and purchase a new phone number",
+      "value": "yes"
     },
-    "GOOGLE_APPLICATION_CREDENTIALS": {
-      "description": "Google Credentials JSON file"
+    "API_KEY": {
+      "description": "Your Nexmo API Key",
+      "value": "",
+      "required" : true
     },
-    "HOSTNAME": {
-      "description": "Hostname where you are running the webserver listening on port 8000"
+    "API_SECRET": {
+      "description": "Your Nexmo API Secret",
+      "value": "",
+      "required" : true
     },
-    "WSHOSTNAME": {
-      "description": "Hostname where you are running the webserver listening on port 8001"
+    "CC": {
+      "description": "The ISO 3361 Country Code where you want the number to be purchased eg, US, GB, ES etc.",
+      "value": "US",
+      "required" : true
+    },
+    "google_client_email": {
+      "description": "The client_email property from your google_creds.json file.",
+      "value": "service_account_name@project.iam.gserviceaccount.com",
+      "required" : true
+    },
+    "google_private_key": {
+      "description": "The private_key property from your google_creds.json file. Make sure to copy and paste everything here.",
+      "value": "-----BEGIN PRIVATE KEY-----",
+      "required" : true
+    }
+  },
+  "buildpacks": [
+     {
+       "url": "https://github.com/nexmo-community/heroku-buildpack-voice"
+     },
+     {
+        "url": "heroku/node"
+     }
+   ],
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "free"
     }
   }
 }

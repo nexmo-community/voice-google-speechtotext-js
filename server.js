@@ -10,18 +10,27 @@ const Nexmo = require('nexmo');
 const { Readable } = require('stream');
 const speech = require('@google-cloud/speech');
 
-const client = new speech.SpeechClient();
+// this is used with the heroku one-click install.
+// if you are running locally, use GOOGLE_APPLICATION_CREDENTIALS to point to the file location
+if (!process.env.GOOGLE_APPLICATION_CREDENTIALS) {
+  let config = {
+    credentials: {
+      client_email: process.env.google_client_email,
+      private_key: process.env.google_private_key
+    }
+  }
+}
+
+const client = new speech.SpeechClient(config||null);
 
 const nexmo = new Nexmo({
-  apiKey: 'dummy',
-  apiSecret: 'dummy',
   applicationId: process.env.APP_ID,
   privateKey: process.env.PRIVATE_KEY || './private.key'
 });
 
 app.use(bodyParser.json());
 
-app.get('/ncco', (req, res) => {
+app.get('/answer', (req, res) => {
 
   let nccoResponse = [
     {
@@ -29,7 +38,7 @@ app.get('/ncco', (req, res) => {
       "endpoint": [{
         "type": "websocket",
         "content-type": "audio/l16;rate=16000",
-        "uri": `ws://${req.hostname}/nexmosocket`
+        "uri": `ws://${req.hostname}/socket`
       }]
     }
   ];
@@ -38,12 +47,12 @@ app.get('/ncco', (req, res) => {
 });
 
 app.post('/event', (req, res) => {
-  console.log('EVENT LOG', req.body)
+  console.log('EVENT LOG::', req.body)
   res.status(204).end();
 });
 
 // Nexmo Websocket Handler
-app.ws('/nexmosocket', (ws, req) => {
+app.ws('/socket', (ws, req) => {
 
   let request ={
     config: {
