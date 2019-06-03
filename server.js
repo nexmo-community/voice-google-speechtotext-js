@@ -12,11 +12,13 @@ const speech = require('@google-cloud/speech');
 
 // this is used with the heroku one-click install.
 // if you are running locally, use GOOGLE_APPLICATION_CREDENTIALS to point to the file location
-if (!process.env.GOOGLE_APPLICATION_CREDENTIALS) {
-  let config = {
+let config = null;
+if (process.env.GOOGLE_APPLICATION_CREDENTIALS === undefined) {
+  config = {
+    projectId: 'nexmo-extend',
     credentials: {
-      client_email: process.env.google_client_email,
-      private_key: process.env.google_private_key
+      client_email: process.env.GOOGLE_CLIENT_EMAIL,
+      private_key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n')
     }
   }
 }
@@ -58,7 +60,7 @@ app.ws('/socket', (ws, req) => {
     config: {
       encoding: 'LINEAR16',
       sampleRateHertz: 16000,
-      languageCode: 'en-US'
+      languageCode: process.env.LANG_CODE || 'en-US'
     },
     interimResults: false
   };

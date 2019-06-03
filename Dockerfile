@@ -1,6 +1,6 @@
 FROM node:11-alpine
 
-EXPOSE 8000 8001
+EXPOSE 8000
 WORKDIR /usr/src/
 
 COPY ./package.json ./

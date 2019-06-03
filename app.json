@@ -26,12 +26,12 @@
       "value": "US",
       "required" : true
     },
-    "google_client_email": {
+    "GOOGLE_CLIENT_EMAIL": {
       "description": "The client_email property from your google_creds.json file.",
       "value": "service_account_name@project.iam.gserviceaccount.com",
       "required" : true
     },
-    "google_private_key": {
+    "GOOGLE_PRIVATE_KEY": {
       "description": "The private_key property from your google_creds.json file. Make sure to copy and paste everything here.",
       "value": "-----BEGIN PRIVATE KEY-----",
       "required" : true
