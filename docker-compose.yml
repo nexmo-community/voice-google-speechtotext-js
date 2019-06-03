@@ -1,0 +1,10 @@
+version: '3.7'
+services:
+  voice-google:
+    build: .
+    env_file: .env
+    ports:
+      - 8000:8000
+    volumes:
+      - ./:/usr/src
+      - ./node_modules:/usr/src/node_modules

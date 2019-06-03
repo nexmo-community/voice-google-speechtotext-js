@@ -1,5 +1,6 @@
 google_creds.json
+.env
 files/*
 private.key
-.env
 node_modules*
+package-lock.json
