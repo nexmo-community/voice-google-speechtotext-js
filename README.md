@@ -4,8 +4,6 @@
 You can use this code as a base for doing real time transcription of a phone call using Google Speech to Text API.
 
 An audio stream is sent via websocket connection to your server and then relayed to the Google streaming interface. Speech recognition is performed and the text returned to the console.
-<<<<<<< HEAD
-
 
 ## Google Speech to Text API
 You will need to set up a [Google Cloud project and service account](https://cloud.google.com/speech-to-text/docs/quickstart-client-libraries). Once these steps are completed, you will have a downloaded JSON file to set up the rest of the project. You will need this file prior to using the `Deploy to Heroku` button. If you plan on running this locally, make sure this file is saved in the project folder.
@@ -87,25 +85,3 @@ docker-compose up
 ```
 
 This will create a new image with all the dependencies and run it at http://localhost:3000.
-=======
-
-For google
-Create or select a project. https://console.cloud.google.com/project
-Enable the Google Speech-to-Text API for that project. https://console.cloud.google.com/flows/enableapi?apiid=speech.googleapis.com
-Create a service account.
-Download a private key as JSON.
-
-Deploy to Heroku
-
-Get the nexmo api key and secret
-Buildpack will create an app and a number for you
-
-Running locally
-You will need to create an app and get a number
-
-with docker compose
-
-using a tunnel
-
-## Prerequisites
->>>>>>> cff1bc0... updates for readme changes
