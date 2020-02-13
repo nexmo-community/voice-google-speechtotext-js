@@ -11,3 +11,4 @@ ENV PATH /usr/src/node_modules/.bin:$PATH
 COPY . .
 
 CMD ["npm", "start"]
+
