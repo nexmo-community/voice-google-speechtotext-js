@@ -1,32 +1,37 @@
-# Nexmo + Google Cloud Speech Transcription Demo
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://nexmo.dev/google-nexmo-speechtotext-heroku)
+# Voice Automated City Services (VACS)
 
-You can use this code as a base for doing real time transcription of a phone call using Google Speech to Text API.
+## Akeem Seymens’ & Max Stuart’s 2020 Portfolio Project Proposal
+VACS is an automated phone line anyone can call to find human services near them, such as free food, legal assistance, non-emergency medical help, and more. It uses the SFServiceGuide.org API.
 
-An audio stream is sent via websocket connection to your server and then relayed to the Google streaming interface. Speech recognition is performed and the text returned to the console.
+### Based on Nexmo + Google Cloud Speech Transcription Demo
+https://github.com/nexmo-community/voice-google-speechtotext-js
+
+We used this app as a base to get the transcription of a phone call using Google Speech-to-Text API.
+
+An audio stream is sent via websocket connection to a server and then relayed to the Google streaming interface. Speech recognition is performed and the text returned to the server's console.
+
 
 ## Google Speech to Text API
-You will need to set up a [Google Cloud project and service account](https://cloud.google.com/speech-to-text/docs/quickstart-client-libraries). Once these steps are completed, you will have a downloaded JSON file to set up the rest of the project. You will need this file prior to using the `Deploy to Heroku` button. If you plan on running this locally, make sure this file is saved in the project folder.
+You will need to set up a [Google Cloud project and service account](https://cloud.google.com/speech-to-text/docs/quickstart-client-libraries).
 
-## Running the App
+Once these steps are completed, you will have a downloaded JSON file to set up the rest of the project.
 
-### Running on Heroku
+You will need this gcloud JSON file prior to running the app, so make sure it is saved in the project folder.
 
-In order to run this on Heroku, you will need to gather the following information:
 
-1. `API_KEY` - This is the API key from your Nexmo Account.
-1. `API_SECRET` - This is the API secret from your Nexmo Account.
-1. `GOOGLE_CLIENT_EMAIL` - You can find this in the `google_creds.json` file as `client_email`
-1. `GOOGLE_PRIVATE_KEY` - You can find this in the `google_creds.json` file as `private_key`.
-  1. Be sure to select everything as `-----BEGIN PRIVATE KEY-----\nXXXXXXXXX\n-----END PRIVATE KEY-----\n`
+## Setting Up the App (w/ your unique Environmental Variables)
+In the project folder, you need to fill out:
 
-This will create a new Nexmo application and phone number to begin testing with. View the logs to see the transcription response from the service. You can do this in the Heroku dashboard, or with the Heroku CLI using `heroku logs -t`.
+- `.env` (example provided in `example.env`)
 
-### Linking the app to Nexmo
+- `google_creds.json` (recieved from setting up the gcloud project & defined in `.env`)
+
+- `private.key` (the key linking your Nexmo-cli to the nexmo app on their server, which recieves the calls. We'll get this from the next step)
+
+### Linking the App to Nexmo
 You will need to create a new Nexmo application in order to work with this app:
 
 #### Create a Nexmo Application Using the Command Line Interface
-
 Install the CLI by following [these instructions](https://github.com/Nexmo/nexmo-cli#installation). Then create a new Nexmo application that also sets up your `answer_url` and `event_url` for the app running locally on your machine.
 
 ```
@@ -35,12 +40,8 @@ nexmo app:create google-speech-to-text http://<your_hostname>/ncco http://<your_
 
 This will return an application ID. Make a note of it.
 
-#### Buy a New Virtual Number
-If you don't have a number already in place, you will need to buy one. This can also be achieved using the CLI by running this command:
+Tools like [ngrok](https://ngrok.com/) are great for exposing ports on your local machine to the internet. If you haven't done this before, [check out this guide](https://www.nexmo.com/blog/2017/07/04/local-development-nexmo-ngrok-tunnel-dr/). Then put that hostname in the <your_hostname> parts of the code snippit above.
 
-```
-nexmo number:buy
-```
 
 #### Link the Virtual Number to the Application
 Finally, link your new number to the application you created by running:
@@ -49,39 +50,41 @@ Finally, link your new number to the application you created by running:
 nexmo link:app YOUR_NUMBER YOUR_APPLICATION_ID
 ```
 
-### Local Install
 
-To run this on your machine you'll need an up-to-date version of Node.
+## Running the App
 
-Start by installing the dependencies with:
+### Using Docker (Recommended)
+To run the app using Docker run the following command in your terminal from the project folder:
+
+```
+docker-compose up --build
+```
+
+This will create a new image with all the dependencies and run it at http://localhost:8000.
+
+If it worked, you won't see much, but you can double check if the container is running by entering `docker ps`
+
+### Alternative Local Install (using Node & NPM)
+To run this on your machine you'll need an up-to-date version of Node. Visit nodejs.org for version for your OS.
+
+First, install the dependencies by executing this from the project folder:
 
 ```
 npm install
 ```
 
-Then copy the example.env file to a new file called .env:
+Then, start the server with:
 
 ```
-cp .env.example > .env
+node server.js
 ```
 
-Edit the .env file to add in your application ID and the location of the credentials file from Google.
+If it worked, you should see `Example app listening on port 8000!` printed to the console.
 
-```yaml
-GOOGLE_APPLICATION_CREDENTIALS=./google_creds.json
-APP_ID="12345678-aaaa-bbbb-4321-1234567890ab"
-LANG_CODE="en-US"
-```
+### Call it!
+Call the phone number you linked to your Nexmo app. There may be a slight delay the first time you call, but keep talking and if it's setup correctly you'll be watching your spoken words appear on the screen.
 
-Tools like [ngrok](https://ngrok.com/) are great for exposing ports on your local machine to the internet. If you haven't done this before, [check out this guide](https://www.nexmo.com/blog/2017/07/04/local-development-nexmo-ngrok-tunnel-dr/).
+
+## Alternate Languages
 
 If you aren't going to be working in the en-US language then you can change the language to any of the other supported languages listed in the [Google Speech to Text API documentation](https://cloud.google.com/speech-to-text/docs/languages).
-
-### Using Docker
-To run the app using Docker run the following command in your terminal:
-
-```
-docker-compose up
-```
-
-This will create a new image with all the dependencies and run it at http://localhost:3000.
