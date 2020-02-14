@@ -2,10 +2,6 @@
   "name": "voice-google-speechtotext",
   "version": "1.0.0",
   "description": "Google Cloud Speech with Nexmo Demo",
-  "main": "server.js",
-  "scripts": {
-    "start": "node server.js"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/nexmo-community/voice-google-speechtotext.git"
@@ -23,5 +19,9 @@
     "express": "^4.16.4",
     "express-ws": "^4.0.0",
     "nexmo": "^2.4.0"
+  },
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
   }
 }

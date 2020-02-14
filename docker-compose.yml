@@ -1,10 +1,10 @@
-version: '3.7'
+version: '2.1'
+
 services:
-  voice-google:
+  vacs-mvp:
+    image: vacs-mvp
     build: .
-    env_file: .env
+    environment:
+      NODE_ENV: production
     ports:
       - 8000:8000
-    volumes:
-      - ./:/usr/src
-      - ./node_modules:/usr/src/node_modules

@@ -1,8 +1,8 @@
-'use strict'
-require('dotenv').load()
+'use strict';
+require('dotenv').load();
 
 const express = require('express');
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
 const app = express();
 const expressWs = require('express-ws')(app);
 
@@ -21,10 +21,10 @@ if (process.env.GOOGLE_APPLICATION_CREDENTIALS === undefined) {
       client_email: process.env.GOOGLE_CLIENT_EMAIL,
       private_key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n')
     }
-  }
+  };
 }
 
-const client = new speech.SpeechClient(config||null);
+const client = new speech.SpeechClient(config || null);
 
 const nexmo = new Nexmo({
   apiKey: "dummy",
@@ -52,14 +52,14 @@ app.get('/ncco', (req, res) => {
 });
 
 app.post('/event', (req, res) => {
-  console.log('EVENT LOG::', req.body)
+  console.log('EVENT LOG::', req.body);
   res.status(204).end();
 });
 
 // Nexmo Websocket Handler
 app.ws('/socket', (ws, req) => {
 
-  let request ={
+  let request = {
     config: {
       encoding: 'LINEAR16',
       sampleRateHertz: 16000,
@@ -69,13 +69,13 @@ app.ws('/socket', (ws, req) => {
   };
 
   const recognizeStream = client
-  .streamingRecognize(request)
-  .on('error', console.error)
-  .on('data', data => {
-    console.log(
-      `Transcription: ${data.results[0].alternatives[0].transcript}`
-    );
-  });
+    .streamingRecognize(request)
+    .on('error', console.error)
+    .on('data', data => {
+      console.log(
+        `Transcription: ${data.results[0].alternatives[0].transcript}`
+      );
+    });
 
   ws.on('message', (msg) => {
     if (typeof msg === "string") {
@@ -88,8 +88,8 @@ app.ws('/socket', (ws, req) => {
 
   ws.on('close', () => {
     recognizeStream.destroy();
-  })
+  });
 });
 
 const port = process.env.PORT || 8000;
-app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+app.listen(port, () => console.log(`Example app listening on port ${port}!`));
