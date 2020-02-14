@@ -10,21 +10,8 @@ const Nexmo = require('nexmo');
 const { Readable } = require('stream');
 const speech = require('@google-cloud/speech');
 
-// this is used with the heroku one-click install.
-// if you are running locally, use GOOGLE_APPLICATION_CREDENTIALS to point to the file location
-let config = null;
-
-if (process.env.GOOGLE_APPLICATION_CREDENTIALS === undefined) {
-  config = {
-    projectId: 'nexmo-extend',
-    credentials: {
-      client_email: process.env.GOOGLE_CLIENT_EMAIL,
-      private_key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n')
-    }
-  };
-}
-
-const client = new speech.SpeechClient(config || null);
+// use GOOGLE_APPLICATION_CREDENTIALS to point to the info google-cloud/speech needs
+const client = new speech.SpeechClient(null);
 
 const nexmo = new Nexmo({
   apiKey: "dummy",

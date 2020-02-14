@@ -1,17 +1,17 @@
 {
-  "name": "voice-google-speechtotext",
+  "name": "vacs-voice-automated-city-services",
   "version": "1.0.0",
-  "description": "Google Cloud Speech with Nexmo Demo",
+  "description": "VACS MVP with Nexmo & Google Cloud Speech, returning results from SFServiceGuide.org from spoken phoned-in requests",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nexmo-community/voice-google-speechtotext.git"
+    "url": "git+https://github.com/ShelterTechSF/VACS-MVP.git"
   },
-  "author": "",
+  "author": "Akeem Seymens & Max Stuart",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/nexmo-community/voice-google-speechtotext/issues"
+    "url": "https://github.com/ShelterTechSF/VACS-MVP/issues"
   },
-  "homepage": "https://github.com/nexmo-community/voice-google-speechtotext#readme",
+  "homepage": "https://github.com/ShelterTechSF/VACS-MVP#readme",
   "dependencies": {
     "@google-cloud/speech": "^2.3.0",
     "body-parser": "^1.18.3",
