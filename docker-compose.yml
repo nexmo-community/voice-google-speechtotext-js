@@ -11,7 +11,8 @@ services:
     ports:
       - "8000:8000"
   rtail-srv:
-    image: chilcano/rtail-server
+    image: rtail-srv
+    build: ./frontend
     ports: 
       - "8181:8181"
       - "9191:9191/udp"
