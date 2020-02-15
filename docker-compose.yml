@@ -4,12 +4,14 @@ services:
   vacs-mvp:
     image: vacs-mvp
     build: .
+    depends_on:
+      - rtail-srv
     environment:
       NODE_ENV: production
     ports:
-      - 8000:8000
+      - "8000:8000"
   rtail-srv:
     image: chilcano/rtail-server
     ports: 
-      - 8181:8181
-      - 9191:9191/udp
+      - "8181:8181"
+      - "9191:9191/udp"

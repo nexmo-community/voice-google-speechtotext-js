@@ -23,6 +23,6 @@
   },
   "main": "server.js",
   "scripts": {
-    "start": "node server.js 2>&1 | rtail --id '0.0.0.0:9191'"
+    "start": "node server.js 2>&1 | rtail --id 'vacs-mvp' -h 'rtail-srv' -p '9191'"
   }
 }
