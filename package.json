@@ -18,10 +18,11 @@
     "dotenv": "^4.0.0",
     "express": "^4.16.4",
     "express-ws": "^4.0.0",
-    "nexmo": "^2.4.0"
+    "nexmo": "^2.4.0",
+    "rtail": "^0.2.1"
   },
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js 2>&1 | rtail --id '0.0.0.0:9191'"
   }
 }
