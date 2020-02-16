@@ -10,7 +10,7 @@ This is the non-visual frontend component, which will:
 1. receive phone calls
 2. play a welcome message, ask the first question, listen to the spoken response
 3. convert the speech to text via google's api
-4. send the converted text to the VACS-engine for parsing as well as the VACS-webpage for display
+4. send the converted text to the VACS-engine for parsing as well as the VACS-landingpage for display
 5. receive text from VACS-engine to play as speech
 6. continue to listen and repeat steps 3. through 7.
 
