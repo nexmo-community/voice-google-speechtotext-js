@@ -4,7 +4,15 @@
 
 ### Akeem Seymens’ & Max Stuart’s 2020 Portfolio Project Proposal
 
-VACS is an automated phone line anyone can call to find human services near them, such as free food, legal assistance, non-emergency medical help, and more. It uses the SFServiceGuide.org API.
+VACS is an automated phone line anyone can call to find human services near them, such as free food, legal assistance, non-emergency medical help, and more.
+
+This is the non-visual frontend component, which will:
+1. receive phone calls
+2. play a welcome message, ask the first question, listen to the spoken response
+3. convert the speech to text via google's api
+4. send the converted text to the VACS-engine for parsing as well as the VACS-webpage for display
+5. receive text from VACS-engine to play as speech
+6. continue to listen and repeat steps 3. through 7.
 
 ### Forked from Nexmo + Google Cloud Speech Transcription Demo
 
