@@ -1,10 +1,12 @@
-# Voice Automated City Services (VACS)
+# Voice Automated City Services (VACS) Audio Frontend
 
-## Akeem Seymens’ & Max Stuart’s 2020 Portfolio Project Proposal
+## Phone Connection, Speech-To-Text, & Text-To-Speech
+
+### Akeem Seymens’ & Max Stuart’s 2020 Portfolio Project Proposal
 
 VACS is an automated phone line anyone can call to find human services near them, such as free food, legal assistance, non-emergency medical help, and more. It uses the SFServiceGuide.org API.
 
-### Based on Nexmo + Google Cloud Speech Transcription Demo
+### Forked from Nexmo + Google Cloud Speech Transcription Demo
 
 <https://github.com/nexmo-community/voice-google-speechtotext-js>
 
