@@ -1,12 +1,21 @@
-# Voice Automated City Services (VACS) Audio Frontend
+# Voice Automated City Services (VACS)
 
-## Phone Connection, Speech-To-Text, & Text-To-Speech
-
-### Akeem Seymens’ & Max Stuart’s 2020 Portfolio Project Proposal
+## Akeem Seymens’ & Max Stuart’s 2020 Portfolio Project Proposal
 
 VACS is an automated phone line anyone can call to find human services near them, such as free food, legal assistance, non-emergency medical help, and more.
 
-This is the non-visual frontend component, which will:
+## SubComponents
+
+- Audio Frontend (NodeJS)
+- REST API (Python)
+- Visual Frontend Admin Dashboard (rTail + Express)
+- Database of State Management & History (Redis)
+
+## Audio Frontend
+
+#### Phone Connection, Speech-To-Text, & Text-To-Speech
+
+The the non-visual frontend component will:
 1. receive phone calls
 2. play a welcome message, ask the first question, listen to the spoken response
 3. convert the speech to text via google's api
@@ -14,7 +23,7 @@ This is the non-visual frontend component, which will:
 5. receive text from VACS-engine to play as speech
 6. continue to listen and repeat steps 3. through 7.
 
-### Forked from Nexmo + Google Cloud Speech Transcription Demo
+#### Forked from Nexmo + Google Cloud Speech Transcription Demo
 
 <https://github.com/nexmo-community/voice-google-speechtotext-js>
 
@@ -22,7 +31,7 @@ We used this app as a base to get the transcription of a phone call using Google
 
 An audio stream is sent via websocket connection to a server and then relayed to the Google streaming interface. Speech recognition is performed and the text returned to the server's console.
 
-## Google Speech to Text API
+#### Google Speech to Text API
 
 You will need to set up a [Google Cloud project and service account](https://cloud.google.com/speech-to-text/docs/quickstart-client-libraries).
 
