@@ -1,18 +1,31 @@
 version: '2.1'
 
 services:
-  vacs-mvp:
-    image: vacs-mvp
-    build: .
+  vacs-api:
+    image: vacs-api
+    build: ./api
     depends_on:
       - rtail-srv
+      - redis
+    ports:
+      - "80:80"
+      - "443:443"
+  audiofrontend:
+    image: audiofrontend
+    build: ./audiofrontend
+    depends_on:
+      - vacs-api
     environment:
       NODE_ENV: production
     ports:
       - "8000:8000"
-  rtail-srv:
-    image: rtail-srv
+  rtail-express:
+    image: rtail-express
     build: ./frontend
+    depends_on:
+      - vacs-api
     ports: 
       - "8181:8181"
       - "9191:9191/udp"
+  redis:
+    image: redis:6.0-rc1-alpine3.11
