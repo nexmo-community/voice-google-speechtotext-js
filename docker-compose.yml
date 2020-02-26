@@ -9,9 +9,8 @@ services:
     environment:
       NODE_ENV: production
     ports:
-      - "80:80"
+      - "80:8000"
       - "443:443"
-      - "8000:8000"
   landingpage:
     image: vacs-landingpage
     build: ./landingpage

@@ -11,18 +11,18 @@ const Nexmo = require('nexmo');
 const { Readable } = require('stream');
 
 const SpeechToTextV1 = require('ibm-watson/speech-to-text/v1');
-const { IamTokenManager } = require('ibm-watson/auth');
+const { IamAuthenticator } = require('ibm-watson/auth');
 
 const speechToText = new SpeechToTextV1({
   authenticator: new IamAuthenticator({
-    apikey: process.env.SPEECH_TO_TEXT_APIKEY,
+    apikey: process.env.SPEECH_TO_TEXT_IAM_APIKEY,
   }),
   url: process.env.SPEECH_TO_TEXT_URL,
 });
 
-const speech = require('@google-cloud/speech');
-// use GOOGLE_APPLICATION_CREDENTIALS to point to the info google-cloud/speech needs
-const client = new speech.SpeechClient(null);
+// const speech = require('@google-cloud/speech');
+// // use GOOGLE_APPLICATION_CREDENTIALS to point to the info google-cloud/speech needs
+// const client = new speech.SpeechClient(null);
 
 const nexmo = new Nexmo({
   apiKey: "dummy",
@@ -66,14 +66,24 @@ app.ws('/socket', (ws, req) => {
     interimResults: false
   };
 
-  const recognizeStream = client
-    .streamingRecognize(request)
-    .on('error', console.error)
-    .on('data', data => {
-      console.log(
-        `Transcription: ${data.results[0].alternatives[0].transcript}`
-      );
-    });
+  // const recognizeStream = client
+  //   .streamingRecognize(request)
+  //   .on('error', console.error)
+  //   .on('data', data => {
+  //     console.log(
+  //       `Transcription: ${data.results[0].alternatives[0].transcript}`
+  //     );
+  //   });
+
+  var params = {
+    objectMode: true,
+    contentType: 'audio/l16;rate=16000',
+    model: 'en-US_BroadbandModel'
+  };
+
+  const recognizeStream = speechToText.recognizeUsingWebSocket(params);
+  recognizeStream.on('data', data => console.log(`Transcription: ${data.results[0].alternatives[0].transcript}`));
+  recognizeStream.on('error', console.error);
 
   ws.on('message', (msg) => {
     if (typeof msg === "string") {
@@ -81,7 +91,6 @@ app.ws('/socket', (ws, req) => {
     } else {
       recognizeStream.write(msg);
     }
-
   });
 
   ws.on('close', () => {
