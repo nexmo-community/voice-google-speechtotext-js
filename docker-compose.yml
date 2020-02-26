@@ -6,7 +6,6 @@ services:
     build: ./soe
     depends_on:
 #      - redis
-      - landingpage
     environment:
       NODE_ENV: production
     ports:
@@ -16,6 +15,8 @@ services:
   landingpage:
     image: vacs-landingpage
     build: ./landingpage
+    depends_on:
+      - soe
     ports: 
       - "8181:8181"
       - "9191:9191/udp"
