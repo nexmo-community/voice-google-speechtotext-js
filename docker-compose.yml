@@ -1,28 +1,22 @@
-version: '2.1'
+version: '3.7'
 
 services:
-  api:
-    image: vacs-api
-    build: ./api
+  soe:
+    image: vacs-soe
+    build: ./soe
     depends_on:
       - redis
-    ports:
-      - "80:80"
-      - "443:443"
-  audiofrontend:
-    image: vacs-audiofrontend
-    build: ./audiofrontend
-    depends_on:
-      - api
     environment:
       NODE_ENV: production
     ports:
+      - "80:80"
+      - "443:443"
       - "8000:8000"
   landingpage:
     image: vacs-landingpage
     build: ./landingpage
     depends_on:
-      - api
+      - soe
     ports: 
       - "8181:8181"
       - "9191:9191/udp"

@@ -6,13 +6,20 @@
 
 VACS is an automated phone line anyone can call to find human services near them, such as free food, legal assistance, non-emergency medical help, and more.
 
-This is the non-visual frontend component, which will:
-1. receive phone calls
-2. play a welcome message, ask the first question, listen to the spoken response
-3. convert the speech to text via google's api
-4. send the converted text to the VACS-engine for parsing as well as the VACS-landingpage for display
-5. receive text from VACS-engine to play as speech
-6. continue to listen and repeat steps 3. through 7.
+This is the Service Orchestration Engine (SOE), which will:
+
+1. receive phone calls (via Nexmo)
+2. connect the user with Watson Assistant, which will give the SOE text of the welcome message & first question
+3. send text to Watson TTS and to the VACS-landingpage for display
+4. play the speech from Watson TTS to the user
+5. convert the user's spoken response to text (via Watson SST)
+6. send the text Watson Assistant and to the VACS-landingpage for display
+7. continue the connection between User<->speech<->text<->Watson Assistant
+
+When requested by Watson Assistant, the SOE will also:
+
+- query Algolia for search results, do some formatting of them, and return them to Watson
+- query AskDarcel for a database entry, do some formatting of it, return it to Watson and save it for texting to the user.
 
 ### Forked from Nexmo + Google Cloud Speech Transcription Demo
 
