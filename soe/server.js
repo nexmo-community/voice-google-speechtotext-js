@@ -1,4 +1,5 @@
 'use strict';
+// load environment properties from a .env file for local development
 require('dotenv').load();
 
 const express = require('express');
@@ -8,8 +9,18 @@ const expressWs = require('express-ws')(app);
 
 const Nexmo = require('nexmo');
 const { Readable } = require('stream');
-const speech = require('@google-cloud/speech');
 
+const SpeechToTextV1 = require('ibm-watson/speech-to-text/v1');
+const { IamTokenManager } = require('ibm-watson/auth');
+
+const speechToText = new SpeechToTextV1({
+  authenticator: new IamAuthenticator({
+    apikey: process.env.SPEECH_TO_TEXT_APIKEY,
+  }),
+  url: process.env.SPEECH_TO_TEXT_URL,
+});
+
+const speech = require('@google-cloud/speech');
 // use GOOGLE_APPLICATION_CREDENTIALS to point to the info google-cloud/speech needs
 const client = new speech.SpeechClient(null);
 

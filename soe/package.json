@@ -15,9 +15,12 @@
   "dependencies": {
     "@google-cloud/speech": "^2.3.0",
     "body-parser": "^1.18.3",
+    "debug": "^4.1.1",
     "dotenv": "^4.0.0",
     "express": "^4.16.4",
     "express-ws": "^4.0.0",
+    "ibm-watson": "^5.4.0",
+    "jest": "^25.1.0",
     "nexmo": "^2.4.0",
     "rtail": "^0.2.1"
   },
