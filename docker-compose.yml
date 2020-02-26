@@ -4,7 +4,7 @@ services:
   soe:
     image: vacs-soe
     build: ./soe
-    depends_on:
+#    depends_on:
 #      - redis
     environment:
       NODE_ENV: production
