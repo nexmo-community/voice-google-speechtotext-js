@@ -22,7 +22,10 @@ const nexmo = new Nexmo({
   apiSecret: process.env.NEXMO_API_SECRET,
   applicationId: process.env.NEXMO_APP_ID,
   privateKey: process.env.PRIVATE_KEY || './private.key'
-}, { debug: true });
+};
+
+let calls = nexmo.calls;
+let talk = calls.talk;
 
 app.use(bodyParser.json());
 
@@ -43,7 +46,7 @@ let callUUID = null;
 app.post('/event', (req, res) => {
   if (req.body.from !== 'Unknown') {
     caller = req.body.from;
-    callUUID = req.body.conversation_uuid.slice(5);
+    callUUID = req.body.uuid;
   }
   console.log('EVENT from', caller, 'to', req.body.to, req.body.status);
   // console.log('EVENT LOG::', req.body);
@@ -67,9 +70,9 @@ app.ws('/socket', (ws, req) => {
     }).then(res => {
       // console.log(JSON.stringify(res, null, 2));
       console.log('Darcel:', res.result.output.generic[0].text);
-      nexmo.calls.talk.start(callUUID, {
+      talk.start(callUUID, {
         text: res.result.output.generic[0].text
-      }).then(res => { console.log(res); }).catch(err => { console.log(err); });
+      }, (err, res) => { if (err) { console.error(err); } else { console.log(res); } });
     }).catch(err => { console.log(err); });
   }).catch(err => { console.log(err); });
 
@@ -95,9 +98,9 @@ app.ws('/socket', (ws, req) => {
       }).then(res => {
         // console.log(JSON.stringify(res, null, 2));
         console.log('Darcel:', res.result.output.generic[0].text);
-        nexmo.calls.talk.start(callUUID, {
+        talk.start(callUUID, {
           text: res.result.output.generic[0].text
-        }).then(res => { console.log(res); }).catch(err => { console.log(err); });
+        }, (err, res) => { if (err) { console.error(err); } else { console.log(res); } });
       }).catch(err => { console.log(err); });
     });
 
