@@ -16,7 +16,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:sheltertechsf/vacs-landingpage"
+    "url": "git@github.com:sheltertechsf/vacs-mvp"
   },
   "dependencies": {
     "chrono-node": "^1.0.6",

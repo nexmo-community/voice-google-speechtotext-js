@@ -1,7 +1,7 @@
 {
-  "name": "vacs-voice-automated-city-services",
+  "name": "vacs-voice-automated-city-services-soe",
   "version": "1.0.0",
-  "description": "VACS MVP with Nexmo & Google Cloud Speech, returning results from SFServiceGuide.org from spoken phoned-in requests",
+  "description": "VACS Service Orchestration Engine with Nexmo & Watson, returning results from SFServiceGuide.org from spoken phoned-in requests",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ShelterTechSF/VACS-MVP.git"
@@ -15,14 +15,17 @@
   "dependencies": {
     "@google-cloud/speech": "^2.3.0",
     "body-parser": "^1.18.3",
+    "debug": "^4.1.1",
     "dotenv": "^4.0.0",
     "express": "^4.16.4",
     "express-ws": "^4.0.0",
+    "ibm-watson": "^5.4.0",
+    "jest": "^25.1.0",
     "nexmo": "^2.4.0",
     "rtail": "^0.2.1"
   },
   "main": "server.js",
   "scripts": {
-    "start": "node server.js 2>&1 | rtail --id 'vacs-mvp' -h 'rtail-srv' -p '9191'"
+    "start": "node server.js 2>&1 | rtail --id 'vacs-soe' -h 'landingpage' -p '9191'"
   }
 }
