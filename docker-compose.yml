@@ -4,20 +4,19 @@ services:
   soe:
     image: vacs-soe
     build: ./soe
-#    depends_on:
-#      - redis
+    depends_on:
+      - landingpage
+      # - redis
     environment:
       NODE_ENV: production
     ports:
-      - "80:8000"
+      - "8000:8000"
       - "443:443"
   landingpage:
     image: vacs-landingpage
     build: ./landingpage
-    depends_on:
-      - soe
-    ports: 
+    ports:
       - "8181:8181"
       - "9191:9191/udp"
-#  redis:
-#    image: redis:6.0-rc1-alpine3.11
+  # redis:
+  #   image: redis:6.0-rc1-alpine3.11

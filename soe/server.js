@@ -72,7 +72,7 @@ app.ws('/socket', (ws, req) => {
       console.log('Darcel:', res.result.output.generic[0].text);
       talk.start(callUUID, {
         text: res.result.output.generic[0].text
-      }, (err, res) => { if (err) { console.error(err); } else { console.log(res); } });
+      }, (err => { console.log(err); }));
     }).catch(err => { console.log(err); });
   }).catch(err => { console.log(err); });
 
@@ -100,7 +100,7 @@ app.ws('/socket', (ws, req) => {
         console.log('Darcel:', res.result.output.generic[0].text);
         talk.start(callUUID, {
           text: res.result.output.generic[0].text
-        }, (err, res) => { if (err) { console.error(err); } else { console.log(res); } });
+        }, (err => { console.log(err); }));
       }).catch(err => { console.log(err); });
     });
 

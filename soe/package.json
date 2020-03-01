@@ -26,6 +26,6 @@
   },
   "main": "server.js",
   "scripts": {
-    "start": "node server.js 2>&1 | rtail --id 'vacs-soe' -h 'vacs-landingpage' -p '9191'"
+    "start": "node server.js 2>&1 | rtail --id 'vacs-soe' -h 'landingpage' -p '9191'"
   }
 }
