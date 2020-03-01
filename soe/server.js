@@ -22,7 +22,7 @@ const nexmo = new Nexmo({
   apiSecret: process.env.NEXMO_API_SECRET,
   applicationId: process.env.NEXMO_APP_ID,
   privateKey: process.env.PRIVATE_KEY || './private.key'
-};
+});
 
 let calls = nexmo.calls;
 let talk = calls.talk;
