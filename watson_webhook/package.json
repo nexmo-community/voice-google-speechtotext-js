@@ -2,14 +2,25 @@
   "name": "watson_webhook",
   "version": "1.0.0",
   "description": "api for watson to call via webhook for retrieving results from Algolia and AskDarcel",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "test:watch": "npm test --watch"
   },
   "author": "Max Stuart, Toli Zaslavskiy, Akeem Seymens",
   "license": "MIT",
   "dependencies": {
+    "algoliasearch": "^4.0.3",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "got": "^10.6.0"
+  },
+  "devDependencies": {
+    "axios": "^0.19.2",
     "jest": "^25.1.0"
+  },
+  "env": {
+    "node": true,
+    "jest": true
   }
 }
