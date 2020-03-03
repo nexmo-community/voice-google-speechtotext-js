@@ -1,6 +1,15 @@
 version: '3.7'
 
 services:
+  reverse-proxy:
+    image: traefik:v2.1 # The official v2 Traefik docker image
+    command: --api.insecure=true --providers.docker # Enables the web UI and tells Traefik to listen to docker
+    ports:
+      - "80:80" # The HTTP port
+      - "443:443"
+      - "8080:8080" # The Web UI (enabled by --api.insecure=true)
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock # So that Traefik can listen to the Docker events
   soe:
     image: vacs-soe
     build: ./soe
@@ -11,7 +20,13 @@ services:
       NODE_ENV: production
     ports:
       - "8000:8000"
-      - "443:443"
+  watson_webhook:
+    image: watson_webhook
+    build: ./watson_webhook
+    environment:
+      NODE_ENV: production
+    ports:
+      - "5000:5000"
   landingpage:
     image: vacs-landingpage
     build: ./landingpage

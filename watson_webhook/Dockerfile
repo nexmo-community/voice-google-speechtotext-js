@@ -4,5 +4,5 @@ WORKDIR /usr/src/app
 COPY ["package.json", "package-lock.json*", "npm-shrinkwrap.json*", "./"]
 RUN npm install --production
 COPY . .
-EXPOSE 8080
+EXPOSE 5000
 CMD npm start
