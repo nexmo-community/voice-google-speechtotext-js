@@ -118,5 +118,5 @@ app.ws('/socket', (ws, req) => {
   });
 });
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 8000;
 app.listen(port, () => console.log(`Service Orchestration Engine listening on port ${port}!`));
