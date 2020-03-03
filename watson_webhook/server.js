@@ -20,7 +20,6 @@ const startServer = () => {
                 const body = await got(
                     `https://maps.googleapis.com/maps/api/geocode/json?address=${req.body.neighborhood}%20San%20Francisco&key=${process.env.GOOGLE_API_KEY}`
                 ).json();
-                // console.log(body.results[0].geometry.location);
                 res.json(body.results[0].geometry.location);
                 break;
             case 'search':
@@ -30,34 +29,30 @@ const startServer = () => {
                     attributesToHighlight: [],
                     attributesToRetrieve: ['name', '_geoloc']
                 }).then(({ hits }) => {
-                    // console.log(hits.length, hits);
                     res.json({ hits });
                 });
                 break;
             case 'read_list':
                 let algoliaResults = await req.body.hits.hits;
-                console.log(req.body.hits.hits);
                 let formattedNameString = '';
                 let i = 1;
                 algoliaResults.forEach(singleResult => {
                     formattedNameString += ` ${i}. ` + singleResult.name + ',';
                     i++;
                 });
-                console.log(formattedNameString);
                 res.json({ string: formattedNameString });
-
-            // let algoliaResult = await req.body.hits[number].name;
-            // console.log(algoliaResult);
-            // res.json({ name: algoliaResult });
+                break;
             case 'retrieve':
                 //retrieve more details from AskDarcel for the given Service
                 break;
-
             default:
+                let e = "case not found, please include a valid value for the 'intent' key in the json parameters";
+                console.error(e);
+                res.status(404).json({ error: e });
                 break;
         }
     });
-    app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+    app.listen(port, () => console.log(`watson_webhook listening on port ${port}!`));
 };
 
 const killServer = (server) => {
