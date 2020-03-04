@@ -1,15 +1,20 @@
-version: '3.7'
+version: '3.3'
 
 services:
-  reverse-proxy:
-    image: traefik:v2.1 # The official v2 Traefik docker image
-    command: --api.insecure=true --providers.docker # Enables the web UI and tells Traefik to listen to docker
+  nginx:
+    image: nginx:1.17.8-alpine
     ports:
-      - "80:80" # The HTTP port
-      - "443:443"
-      - "8080:8080" # The Web UI (enabled by --api.insecure=true)
+      - "80:80"
+      # - "443:443"
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock # So that Traefik can listen to the Docker events
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      # - ./nginx/error.log:/var/log/nginx/error.log
+      # - ./nginx/cache/:/var/nginx/cache
+      # - /etc/letsencrypt/:/etc/letsencrypt/
+    depends_on: 
+      - soe
+      - landingpage
+      - watson_webhook
   soe:
     image: vacs-soe
     build: ./soe
