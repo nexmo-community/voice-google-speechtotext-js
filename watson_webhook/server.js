@@ -31,12 +31,10 @@ const startServer = () => {
                     attributesToRetrieve: ['name', '_geoloc', 'schedule', 'resource_schedule']
                 }).then(({ hits }) => {
                     hits.forEach(entry => {
-                        console.log('***PRE_POP***:', entry);
                         if (entry.schedule.length === 0) {
                             entry.schedule = entry.resource_schedule;
                         }
                         delete entry['resource_schedule'];
-                        console.log('***POST_POP***:', entry);
                     });
                     res.json({ hits });
                 });
@@ -52,8 +50,10 @@ const startServer = () => {
                 res.json({ string: formattedNameString });
                 break;
             case 'retrieve':
-                //retrieve more details from AskDarcel for the given Service
+                // retrieve more details about a certain from AskDarcel for texting the user
                 break;
+            case 'text':
+                // text the user at the phone number they gave
             default:
                 let e = "case not found, please include a valid value for the 'intent' key in the json parameters";
                 console.error(e);
