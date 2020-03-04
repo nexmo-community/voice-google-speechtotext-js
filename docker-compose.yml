@@ -8,10 +8,10 @@ services:
       # - "443:443"
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
-      # - ./nginx/error.log:/var/log/nginx/error.log
-      # - ./nginx/cache/:/var/nginx/cache
+      - ./nginx/:/var/log/nginx/
+      - ./nginx/cache/:/var/nginx/cache
       # - /etc/letsencrypt/:/etc/letsencrypt/
-    depends_on: 
+    depends_on:
       - soe
       - landingpage
       - watson_webhook

@@ -15,6 +15,7 @@ app.use(bodyParser.json());
 
 const startServer = () => {
     app.post('/api/watson_webhook', async (req, res) => {
+        console.log(req.body);
         switch (req.body.intent) {
             case 'neighborhood':
                 const body = await got(

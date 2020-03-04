@@ -10,3 +10,5 @@ package-lock.json
 ._*
 .DS_Store
 .DS_Store?
+nginx
+res*.json

@@ -35,7 +35,7 @@ app.get('/ncco', (req, res) => {
     "endpoint": [{
       "type": "websocket",
       "content-type": "audio/l16;rate=16000",
-      "uri": `ws://${req.hostname}/socket`
+      "uri": `ws://${process.env.WEBSITE_URL}/socket`
     }]
   }];
   res.status(200).json(nccoResponse);
@@ -96,8 +96,8 @@ app.ws('/socket', (ws, req) => {
         sessionId: wSessionID,
         input: { 'text': data.results[0].alternatives[0].transcript }
       }).then(res => {
-        // console.log(JSON.stringify(res, null, 2));
         console.log('Darcel:', res.result.output.generic[0].text);
+        // and send to Nexmo TTS
         talk.start(callUUID, {
           text: res.result.output.generic[0].text
         }, (err => { console.log(err); }));
