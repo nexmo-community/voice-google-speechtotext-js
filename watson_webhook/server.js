@@ -28,8 +28,16 @@ const startServer = () => {
                     aroundLatLng: `${req.body.lat_lng.lat}, ${req.body.lat_lng.lng}`,
                     hitsPerPage: 6,
                     attributesToHighlight: [],
-                    attributesToRetrieve: ['name', '_geoloc']
+                    attributesToRetrieve: ['name', '_geoloc', 'schedule', 'resource_schedule']
                 }).then(({ hits }) => {
+                    hits.forEach(entry => {
+                        console.log('***PRE_POP***:', entry);
+                        if (entry.schedule.length === 0) {
+                            entry.schedule = entry.resource_schedule;
+                        }
+                        delete entry['resource_schedule'];
+                        console.log('***POST_POP***:', entry);
+                    });
                     res.json({ hits });
                 });
                 break;
