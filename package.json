@@ -18,7 +18,7 @@
   "homepage": "https://github.com/nexmo-community/voice-google-speechtotext#readme",
   "dependencies": {
     "@google-cloud/speech": "^2.3.0",
-    "body-parser": "^1.18.3",
+    "body-parser": "^1.20.6",
     "dotenv": "^4.0.0",
     "express": "^4.16.4",
     "express-ws": "^4.0.0",
